@@ -70,10 +70,12 @@ public class MyModule {
     }
 }
 ```
+
 Setting up EasyInject with module(s):
+
 ```java
 EasyInjector easyInject = Easy.createInjector(new MyModule());
-```a
+```
 The DataSource dependency will now be available for injection:
 ```java
 public class MyApp {
