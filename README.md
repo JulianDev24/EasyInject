@@ -5,8 +5,22 @@ EasyInject allows developers to instantiate dependencies, provide additional dep
 
 ```xml
 
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>com.github.JulianDev24.EasyInject</groupId>
+        <artifactId>easyinjector-core</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+</dependencies>
 ```
-[Javadoc](https://github.com/JulianDev24/EasyInject "Javadoc") for EasyInject
+
 ##### Usage - code examples
 ###### Create EasyInjector (the injector)
 ```java
