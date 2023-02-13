@@ -26,7 +26,9 @@ public final class EasyInjectorImpl implements EasyInjector{
                 providerMethod(module, providerMethod);
             }
         }
+
     }
+
 
 
     /**
@@ -59,6 +61,16 @@ public final class EasyInjectorImpl implements EasyInjector{
     @Override
     public <T> Provider<T> getProvider(Key<T> key) {
         return provider(key, null);
+    }
+
+    /**
+     * Dynamic Registers AbstractModules
+     */
+    @Override
+    public void addDynamicModule(AbstractModule abstractModule){
+        for (Method providerMethod : providers(abstractModule.getClass())) {
+            providerMethod(abstractModule, providerMethod);
+        }
     }
 
     /**
