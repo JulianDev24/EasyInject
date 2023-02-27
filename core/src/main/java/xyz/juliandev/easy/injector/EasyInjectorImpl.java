@@ -10,11 +10,9 @@ import xyz.juliandev.easy.annotations.Provides;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
 
-public final class EasyInjectorImpl implements EasyInjector{
+public final class EasyInjectorImpl implements EasyInjector {
 
     private final Map<Key<?>, Provider<?>> providers = new ConcurrentHashMap<>();
     private final Map<Key<?>, Object> singletons = new ConcurrentHashMap<>();
@@ -137,36 +135,23 @@ public final class EasyInjectorImpl implements EasyInjector{
             final Set<Key<?>> chain
     ) {
         Provider<?>[] providers = new Provider<?>[parameterTypes.length];
-        CompletableFuture<?>[] futureProviders = new CompletableFuture[parameterTypes.length];
         for (int i = 0; i < parameterTypes.length; ++i) {
-            int finalI = i;
-            futureProviders[i] = CompletableFuture.supplyAsync(() -> {
-                Class<?> parameterClass = parameterClasses[finalI];
-                Annotation qualifier1 = Key.qualifier(annotations[finalI]);
-                Class<?> providerType = Provider.class.equals(parameterClass) ?
-                        (Class<?>) ((ParameterizedType) parameterTypes[finalI]).getActualTypeArguments()[0] :
-                        null;
-                if (providerType == null) {
-                    final Key<?> newKey = Key.of(parameterClass, qualifier1);
-                    final Set<Key<?>> newChain = append(chain, key);
-                    if (newChain.contains(newKey)) {
-                        throw new EasyInjectorRuntimeException(String.format("Circular dependency: %s", chain(newChain, newKey)));
-                    }
-                    return provider(newKey, newChain).get();
-                } else {
-                    final Key<?> newKey = Key.of(providerType, qualifier1);
-                    return provider(newKey, null);
+            Class<?> parameterClass = parameterClasses[i];
+            Annotation qualifier = qualifier(annotations[i]);
+            Class<?> providerType = Provider.class.equals(parameterClass) ?
+                    (Class<?>) ((ParameterizedType) parameterTypes[i]).getActualTypeArguments()[0] :
+                    null;
+            if (providerType == null) {
+                final Key<?> newKey = Key.of(parameterClass, qualifier);
+                final Set<Key<?>> newChain = append(chain, key);
+                if (newChain.contains(newKey)) {
+                    throw new EasyInjectorRuntimeException(String.format("Circular dependency: %s", chain(newChain, newKey)));
                 }
-            });
-        }
-        try {
-            CompletableFuture.allOf(futureProviders).join();
-        } catch (CompletionException e) {
-            throw new EasyInjectorRuntimeException("Error while processing parameters in parallel", e);
-        }
-        for (int i = 0; i < parameterTypes.length; ++i) {
-            int finalI = i;
-            providers[i] = () -> futureProviders[finalI].join();
+                providers[i] = () -> provider(newKey, newChain).get();
+            } else {
+                final Key<?> newKey = Key.of(providerType, qualifier);
+                providers[i] = () -> provider(newKey, null);
+            }
         }
         return providers;
     }
