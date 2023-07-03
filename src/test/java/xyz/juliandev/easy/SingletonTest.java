@@ -1,9 +1,9 @@
 package xyz.juliandev.easy;
 
+import org.junit.Test;
 import xyz.juliandev.easy.annotations.Singleton;
 import xyz.juliandev.easy.injector.EasyInjector;
 import xyz.juliandev.easy.injector.Provider;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;

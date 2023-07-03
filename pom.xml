@@ -5,15 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>xyz.juliandev</groupId>
-    <artifactId>parent</artifactId>
-    <packaging>pom</packaging>
-    <version>1.1.0</version>
-
-    <modules>
-        <module>core</module>
-    </modules>
-
-    <name>EasyInjector</name>
+    <artifactId>EasyInject</artifactId>
+    <version>1.0.2</version>
 
     <description>
         EasyInjector is an ultra-lightweight dependency injection library for Java.
@@ -22,7 +15,7 @@
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -77,7 +70,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <outputDirectory>${project.parent.basedir}/artifacts/</outputDirectory>
+                    <outputDirectory>${project.basedir}/artifacts/</outputDirectory>
                 </configuration>
             </plugin>
 
@@ -112,4 +105,5 @@
             </plugins>
         </pluginManagement>
     </build>
+
 </project>
