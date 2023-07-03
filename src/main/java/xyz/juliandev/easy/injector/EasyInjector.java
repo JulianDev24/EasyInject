@@ -1,5 +1,7 @@
 package xyz.juliandev.easy.injector;
 
+import xyz.juliandev.easy.module.AbstractModule;
+
 public interface EasyInjector {
 
     /**
@@ -23,5 +25,7 @@ public interface EasyInjector {
     <T> Provider<T> getProvider(Key<T> key);
 
     boolean injectObjectFields(Object target);
+
+    void addDynamicModule(AbstractModule abstractModule);
 
 }

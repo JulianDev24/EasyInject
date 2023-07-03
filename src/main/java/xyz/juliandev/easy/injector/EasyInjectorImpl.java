@@ -1,11 +1,10 @@
 package xyz.juliandev.easy.injector;
 
 import xyz.juliandev.easy.annotations.Inject;
+import xyz.juliandev.easy.annotations.Provides;
 import xyz.juliandev.easy.annotations.Qualifier;
 import xyz.juliandev.easy.annotations.Singleton;
 import xyz.juliandev.easy.module.AbstractModule;
-import xyz.juliandev.easy.annotations.Provides;
-
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -57,6 +56,16 @@ public final class EasyInjectorImpl implements EasyInjector {
     @Override
     public <T> Provider<T> getProvider(Key<T> key) {
         return provider(key, null);
+    }
+
+    /**
+     * Dynamic Registers AbstractModules
+     */
+    @Override
+    public void addDynamicModule(AbstractModule abstractModule) {
+        for (Method providerMethod : providers(abstractModule.getClass())) {
+            providerMethod(abstractModule, providerMethod);
+        }
     }
 
     /**
